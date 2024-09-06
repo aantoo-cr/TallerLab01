@@ -2,17 +2,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Lab01 {
+    //inicialización de variables globales
     private static int m;
     private static int n;
     private static int[][] matrix;
     private static Scanner scanner = new Scanner(System.in);
 
-    // Clase principal que inicializa los metodos y variables requeridas
-
+    // Clase principal que inicializa metodo menu
     public static void main(String[] args) {
-
     menu();
-
 }
 
     private static int getDimension(String type) {
@@ -35,45 +33,77 @@ public class Lab01 {
             return dimension;
         }
 
-        // Metodo que valida si la dimensión es un entero positivo, el valor que retorna es utilizado dentro del metodo getDimension.
-        private static boolean verifyDimension(int dimension) {
+        // Metodo que valida si la dimensión es un entero positivo, el valor que retorna es utilizado dentro del metodo getDimension
+    private static boolean verifyDimension(int dimension) {
             return dimension > 0;
         }
 
-        private static void fillMatrix() {
-            // Crear variables con los rangos maximos y minimos con los que se podrá llenar la variable
-            int rangeMin = 0;
-            int rangeMax = 10;
-            Random random = new Random();
+       //metodo que llena la matriz con valores aleatorios de 0 a 9
+    private static void fillMatrix() {
+        matrix = new int[m][n];
+        int rangeMin = 0;
+        int rangeMax = 10;
+        Random random = new Random();
 
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    matrix[i][j] = random.nextInt(rangeMax - rangeMin) + rangeMin;
-                }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = random.nextInt(rangeMax - rangeMin) + rangeMin;
             }
         }
+    }
 
+       //metodo que muestra la matriz creada, se agrega un salto de linea al final para que se vea ordenado
+    private static void showMatrix() {
+        System.out.println("Matriz:");
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+        //metodo que muestra una fila específica indicada por el usuario
     public static void showLine(){
         System.out.print("Ingresa el número de la fila que deseas mostrar (0 a " + (m - 1) + "): ");
         int line = scanner.nextInt();
 
         if (line >= 0 && line < m) {
-            System.out.print("Línea " + line + ": ");
             for (int j = 0; j < matrix[line].length; j++) {
                 System.out.print(matrix[line][j] + " ");
             }
-            System.out.println(); // Salto de línea después de la fila
         } else {
             System.out.println("Índice de fila no válido. Por favor, ingresa un número entre 0 y " + (m - 1) + ".");
         }
     }
+       //metodo que verifica que verifica si es que menos del 50 por ciento de los numeros en las casillas de la matriz son 0
+    private static boolean matrizCero(int[][] matriz) {
+        int totalCasillas = 0;
+        int zeroCount = 0;
+
+        for (int[] row : matriz) {
+            for (int value : row) {
+                totalCasillas++;
+                if (value == 0) {
+                    zeroCount++;
+                }
+            }
+        }
+        double zeroPercentage = (double) zeroCount / totalCasillas * 100;     // Calcular el porcentaje de casillas que son cero
+
+        return zeroPercentage > 50;   // Verificar si más del 50% de estas casillas son cero
+    }
+
 
     private static void menu() {
         while (true) {
             System.out.println("\nMenú:");
             System.out.println("1. Definir dimensiones de la matriz");
-            System.out.println("2. Mostrar una línea específica de la matriz");
-            System.out.println("3. Salir");
+            System.out.println("2. LLenar la matriz con datos aleatorios de 0 a 9");
+            System.out.println("3. Mostrar la matriz creada");
+            System.out.println("4. Mostrar una línea específica de la matriz");
+            System.out.println("5. Verificar si la matriz es de tipo 0");
+            System.out.println("6. Salir");
 
             System.out.print("Selecciona una opción: ");
             int option = scanner.nextInt();
@@ -86,14 +116,27 @@ public class Lab01 {
                     break;
                 case 2:
                     fillMatrix();
-                    showLine();
                     break;
                 case 3:
-                    System.out.println("Saliendo del programa.");
+                    System.out.println("La matriz creada es: ");
+                    showMatrix();
+                    break;
+                case 4:
+                    showLine();
+                    break;
+                case 5:
+                    if (matrizCero(matrix)) {
+                        System.out.println("La matriz es de TIPO CERO.");
+                    } else {
+                        System.out.println("La matriz NO es de TIPO CERO.");
+                    }
+                    break;
+                case 6:
+                    System.out.println("Has salido del programa.");
                     scanner.close();
                     return; // Salir del bucle y terminar el programa
                 default:
-                    System.out.println("Opción no válida. Por favor, ingresa una opción entre 1 y 3.");
+                    System.out.println("Opción no válida. Por favor, ingresa una opción entre 1 y 5.");
             }
         }
     }

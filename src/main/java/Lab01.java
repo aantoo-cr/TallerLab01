@@ -40,7 +40,7 @@ public class Lab01 {
             return dimension;
         }
 
-        // Metodo que valida si la dimensión es un entero positivo, el valor que retorna es utilizado dentro del metodo getDimension
+        // Metodo que valida si la dimensión es un entero positivo, el valor que retorna es utilizado dentro del metodo getDimension.
         private static boolean verifyDimension(int dimension) {
             return dimension > 0;
         }
